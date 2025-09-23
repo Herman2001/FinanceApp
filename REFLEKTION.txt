@@ -1,0 +1,33 @@
+REFLEKTION – Finansprogram (FXmaven)
+
+Projektet är ett Java-program för att hantera transaktioner, både via terminal och ett grafiskt gränssnitt med JavaFX även tester är skrivna med Junit5.
+
+Struktur och design
+    - Logik och UI är separerade:
+    -All logik ligger i klasser som TransactionManager och Transaction.
+    -JavaFX-gränssnittet ligger i HelloApplication, HelloController och andra UI-klasser. (Kanske inte optimala namn, men det blev så när jag startade ett nytt JavaFX-projekt.)
+
+Funktioner
+    -Lägga till, radera och lista transaktioner.
+    -Filtrering på olika perioder (dag, vecka, månad, år).
+    -Saldo och summering av inkomster/utgifter.
+    -UI med JavaFX för bättre användarupplevelse.
+
+Testning
+    -Enhetstester skrevs med JUnit 5 på TransactionManager för att säkerställa att transaktioner läggs till, tas bort och summeras korrekt.
+
+Utmaningar och lösningar
+    -Testerna med JUnit 5 var lite svåra att få till eftersom Maven användes för att hantera beroenden.
+    -Att få igång JavaFX var inga större problem då jag har tidigare erfarenhet av UI (i C++), men det krävde extra konfiguration i pom.xml.
+    -Filtrering på veckor var svårt i början, men jag löste det genom att beräkna vecka i Transaction-klassen och använda formatet YYYY-WW.
+
+Förbättringsförslag
+    -Implementera ett mer avancerat UI med flera vyer i samma fönster istället för popup-fönster.
+    -Möjlighet att redigera befintliga transaktioner.
+    -Möjlighet att sortera transaktioner.
+
+Reflektion
+    -Jag är nöjd med separationen av logik och UI, samt att terminalversionen fortfarande fungerar parallellt med JavaFX-versionen.
+    -Maven är egentligen inte nödvändigt för detta projekt, men det var ett bra tillfälle att testa, eftersom det underlättar hantering av externa bibliotek och versioner vid större projekt.
+    -Detta är första gången jag skriver kod i Java, och jag är positivt överraskad. Jag är van vid C++, så det är väldigt skönt att Java hanterar minnet automatiskt så att man inte behöver allokera nytt minne samt frigöra. Samt att slippa alla pointers(!!!!).
+    -Känns skönt att slippa tänka på minnesläckor på samma sätt så man kan fokusera mer på logiken i programmet istället för tekniska detaljer.

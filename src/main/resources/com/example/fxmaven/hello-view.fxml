@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.fxmaven.HelloController"
+      stylesheets="@style.css"
+      spacing="15" alignment="CENTER" prefWidth="400" prefHeight="400">
+
+    <!-- Saldo-rad -->
+    <Label fx:id="balanceLabel" text="Saldo: 0 kr" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- Knappar -->
+    <Button fx:id="addButton" text="Lägg till transaktion"/>
+    <Button fx:id="removeButton" text="Radera transaktion"/>
+    <Button fx:id="listButton" text="Lista alla transaktioner"/>
+    <Button fx:id="filterButton" text="Visa transaktioner för viss period"/>
+
+</VBox>
