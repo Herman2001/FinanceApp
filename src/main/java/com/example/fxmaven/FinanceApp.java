@@ -7,17 +7,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class FinanceApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(FinanceApp.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
 
-        scene.getStylesheets().add(HelloApplication.class.getResource("style.css").toExternalForm());
+        scene.getStylesheets().add(FinanceApp.class.getResource("style.css").toExternalForm());
         stage.setTitle("FinanceApp");
         stage.setScene(scene);
 
-        HelloController controller = fxmlLoader.getController();
+        TransactionController controller = fxmlLoader.getController();
 
         stage.setOnCloseRequest(e -> {
             controller.saveDataToFile();

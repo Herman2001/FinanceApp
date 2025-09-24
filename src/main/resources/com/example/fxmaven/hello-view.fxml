@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.fxmaven.HelloController"
+      fx:controller="com.example.fxmaven.TransactionController"
       stylesheets="@style.css"
       spacing="15" alignment="CENTER" prefWidth="400" prefHeight="400">
 

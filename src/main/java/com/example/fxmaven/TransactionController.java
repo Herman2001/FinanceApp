@@ -17,7 +17,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-public class HelloController {
+public class TransactionController {
 
     @FXML
     private Label balanceLabel;
