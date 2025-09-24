@@ -12,14 +12,11 @@ public class CsvTransactionRepository implements TransactionRepository {
     }
     @Override
     public void save(List<Transaction> transactions) {
-        System.out.println("Saving transactions...");
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
             for (Transaction transaction : transactions) {
                 writer.println(transaction.toCSV());
-                //för debug
-                System.out.println("----- KONTROLL -----");
-                System.out.println(transaction + " sparad till " + fileName + "\n");
             }
+            System.out.println("Transaktion sparad.");
         } catch (IOException e) {
             System.out.println("Kunde inte spara filen " + e.getMessage());
         }

@@ -27,11 +27,13 @@ Tester skrivna med Junit 5 för att testa "TransactionManager".
 - Maven 3.9+
 
 ---
-## För att köra projektet
-### Tester:
+## För att köra projektet från rotmappen
+### Tester
     mvn test
-### UI med JavaFX:
+
+### UI med JavaFX
     mvn javafx:run
-### Terminal applikationen:
+
+### Terminal applikationen
     mvn clean compile exec:java -Dexec.mainClass="mainProgram.Main"
 

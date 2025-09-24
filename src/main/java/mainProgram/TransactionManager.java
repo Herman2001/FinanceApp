@@ -10,7 +10,6 @@ import java.io.*;
 public class TransactionManager {
     private final List<Transaction> transactions = new ArrayList<>();
     private final TransactionRepository repository;
-    //private static final String FILE_NAME = "transactions.csv";
     double balance;
 
     public TransactionManager(TransactionRepository repository) {
@@ -37,9 +36,8 @@ public class TransactionManager {
         return false;
     }
 
+    // För att ej råka ändra i "orginal" listan.
     public List<Transaction> getAllTransactions() {
-        //Kan returnera vanliga listan, men väljer att skapa en ny för att man inte ska kunna göra
-        //ändringar i "orginal" listan.
         return new ArrayList<>(transactions);
     }
 
