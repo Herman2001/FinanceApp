@@ -10,9 +10,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        TransactionManager manager = new TransactionManager();
-        manager.loadFromFile();
-
+        TransactionRepository repo = new CsvTransactionRepository("transactions.csv");
+        TransactionManager manager = new TransactionManager(repo);
         boolean running = true;
         System.out.println("Välkommen till FinanceApp.");
 
@@ -37,7 +36,7 @@ public class Main {
                 default -> System.out.printf("Ogiltligt val.");
             }
         }
-        manager.saveToFile();
+        manager.saveAll();
         System.out.println("Programmet avslutas...");
     }
 

@@ -7,8 +7,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import mainProgram.CsvTransactionRepository;
 import mainProgram.Transaction;
 import mainProgram.TransactionManager;
+import mainProgram.TransactionRepository;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -23,15 +25,13 @@ public class HelloController {
     @FXML
     private Button addButton, removeButton, listButton, filterButton;
 
-    private final TransactionManager manager = new TransactionManager();
+    private final TransactionRepository repo = new CsvTransactionRepository("transactions.csv");
+    private final TransactionManager manager = new TransactionManager(repo);
 
     @FXML
     private void initialize() {
-        // Ladda befintliga transaktioner
-        manager.loadFromFile();
         updateBalance();
 
-        // Koppla knappar till funktioner
         addButton.setOnAction(e -> handleAdd());
         removeButton.setOnAction(e -> handleRemove());
         listButton.setOnAction(e -> handleList());
@@ -94,7 +94,6 @@ public class HelloController {
         stage.show();
     }
 
-    //  för felmeddelande
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -128,7 +127,6 @@ public class HelloController {
                 });
             }
 
-            // För att ippdater a vyn efter transaktion har tagits bort
             @Override
             protected void updateItem(Transaction item, boolean empty) {
                 super.updateItem(item, empty);
@@ -202,6 +200,6 @@ public class HelloController {
     }
 
     public void saveDataToFile() {
-        manager.saveToFile();
+        manager.saveAll();
     }
 }

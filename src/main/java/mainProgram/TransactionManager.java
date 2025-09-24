@@ -9,49 +9,19 @@ import java.io.*;
 
 public class TransactionManager {
     private final List<Transaction> transactions = new ArrayList<>();
-    private static final String FILE_NAME = "transactions.csv";
+    private final TransactionRepository repository;
+    //private static final String FILE_NAME = "transactions.csv";
     double balance;
 
-
-    public void saveToFile(){
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME))) {
-            for (Transaction transaction : transactions) {
-                writer.println(transaction.toCSV());
-                //för debug
-                System.out.println("----- KONTROLL -----");
-                System.out.println(transaction + " sparad till " + FILE_NAME + "\n");
-            }
-        } catch (IOException e) {
-            System.out.println("Kunde inte spara filen " + e.getMessage());
-        }
+    public TransactionManager(TransactionRepository repository) {
+        this.repository = repository;
+        this.transactions.addAll(repository.load());
+        this.balance = transactions.stream().mapToDouble(t -> t.amount).sum();
     }
 
-    public void loadFromFile(){
-        File file = new File(FILE_NAME);
-        if (!file.exists()) {
-            return;
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while((line = br.readLine()) != null) {
-                String[] parts = line.split(",", 3);
-                if (parts.length == 3) {
-                    LocalDate date = LocalDate.parse(parts[0]);
-                    String description = parts[1];
-                    double amount = Double.parseDouble(parts[2]);
-                    Transaction transaction = new Transaction(description, amount, date);
-                    transactions.add(transaction);
-                    balance += amount;
-                    //För debug
-                    System.out.println("----- KONTROLL -----");
-                    System.out.println(transaction + " laddad från " + file.getName() + "\n");
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Kunde inte spara filen " + e.getMessage());
-        }
+    public void saveAll() {
+        repository.save(transactions);
     }
-
 
     public void addTransaction(Transaction t) {
         transactions.add(t);

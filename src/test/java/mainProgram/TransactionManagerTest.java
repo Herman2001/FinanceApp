@@ -17,7 +17,8 @@ public class TransactionManagerTest {
 
     @BeforeEach
     public void setUp() {
-        manager = new TransactionManager();
+        TransactionRepository repo = new inMemoryTransactionRepository();
+        manager = new TransactionManager(repo);
     }
 
     @Test
