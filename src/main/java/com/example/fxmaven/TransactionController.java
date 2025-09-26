@@ -147,7 +147,6 @@ public class TransactionController {
         stage.show();
     }
 
-
     private void handleList() {
         Stage stage = new Stage();
         stage.setTitle("Alla transaktioner.");
@@ -169,7 +168,18 @@ public class TransactionController {
         periodBox.setValue("År");
 
         TextField inputField = new TextField();
-        inputField.setPromptText("Ange värde...");
+        inputField.setPromptText("YYYY");
+        periodBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (periodBox.getValue().equals("År")) {
+                inputField.setPromptText("YYYY");
+            } else if (periodBox.getValue().equals("Månad")) {
+                inputField.setPromptText("YYYY-MM");
+            } else if (periodBox.getValue().equals("Vecka")) {
+                inputField.setPromptText("YYYY-WW");
+            } else if (periodBox.getValue().equals("Dag")) {
+                inputField.setPromptText("YYYY-MM-DD");
+            }
+        });
 
         ListView<Transaction> resultList = new ListView<>();
 
@@ -181,10 +191,22 @@ public class TransactionController {
 
             try {
                 switch (selectedPeriod) {
-                    case "År" -> filtered = manager.filterByPeriod(1, input, null, null, null);
-                    case "Månad" -> filtered = manager.filterByPeriod(2,null, YearMonth.parse(input), null, null);
-                    case "Vecka" -> filtered = manager.filterByPeriod(3, null, null, input, null);
-                    case "Dag" -> filtered = manager.filterByPeriod(4, null, null, null, LocalDate.parse(input));
+                    case "År" -> {
+                        filtered = manager.filterByPeriod(1, input, null, null, null);
+                        inputField.setPromptText("YYYY");
+                    }
+                    case "Månad" -> {
+                        filtered = manager.filterByPeriod(2,null, YearMonth.parse(input), null, null);
+                        inputField.setPromptText("YYYY-MM");
+                    }
+                    case "Vecka" -> {
+                        filtered = manager.filterByPeriod(3, null, null, input, null);
+                        inputField.setPromptText("YYYY-WW");
+                    }
+                    case "Dag" -> {
+                        filtered = manager.filterByPeriod(4, null, null, null, LocalDate.parse(input));
+                        inputField.setPromptText("YYYY-MM-DD");
+                    }
                 }
             } catch (Exception ex) {
                 System.out.println("Felaktigt format" + ex.getMessage());
