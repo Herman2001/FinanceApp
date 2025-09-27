@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.io.*;
 
@@ -25,6 +26,22 @@ public class TransactionManager {
     public void addTransaction(Transaction t) {
         transactions.add(t);
         balance += t.amount;
+    }
+
+    public void updateTransaction(int index, int whatToUpdate, String newDesc, double newAmount, LocalDate newDate ) {
+        switch (whatToUpdate) {
+            case 1:
+                transactions.get(index).description = newDesc;
+                break;
+            case 2:
+                transactions.get(index).amount = newAmount;
+                break;
+            case 3:
+                transactions.get(index).date = newDate;
+                WeekFields weekFields = WeekFields.ISO;
+                transactions.get(index).week = newDate.get(weekFields.weekOfWeekBasedYear());
+                break;
+        }
     }
 
     public boolean removeTransaction(int index) {

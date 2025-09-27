@@ -1,18 +1,33 @@
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: #f0f0f0;
+    -fx-background-color: linear-gradient(to bottom right, #ece8e8, #7e7d7d);
 }
 
 .button {
-    -fx-background-color: #4CAF50;
+    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-padding: 8 16 8 16;
-    -fx-background-radius: 5;
+    -fx-padding: 20 40 20 40;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.3, 0, 2);
+    -fx-font-weight: bold;
 }
 
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #3ddc84, #2ecc71);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.4, 0, 3);
+    -fx-translate-y: -2;
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #27ae60, #1e8449);
+    -fx-translate-y: 1;
+}
+
+
 .label#balanceLabel {
-    -fx-font-size: 24px;
+    -fx-font-size: 46px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #34495e;
+    -fx-padding: 20;
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class TransactionManagerTest {
 
     TransactionManager manager;
@@ -81,12 +80,4 @@ public class TransactionManagerTest {
         assertEquals(10000, manager.getIncomeSum(all));
         assertEquals(-200, manager.getSpentSum(all));
     }
-
-
-
-
-
-
-
-
 }

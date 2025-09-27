@@ -8,16 +8,18 @@ public class Main {
         TransactionRepository repo = new CsvTransactionRepository("transactions.csv");
         TransactionManager manager = new TransactionManager(repo);
         TransactionService service = new TransactionService(manager, scanner);
+
         boolean running = true;
         System.out.println("Välkommen till FinanceApp.");
 
         while (running) {
             System.out.println("\n1. Lägg till en inkomst/utgift.");
             System.out.println("2. Radera en transaktion.");
-            System.out.println("3. Lista alla transaktioner.");
-            System.out.println("4. Visa transaktioner för en viss period.");
-            System.out.println("5. Visa saldo.");
-            System.out.println("6. Avsluta programmet.");
+            System.out.println("3. Uppdatera transaktion.");
+            System.out.println("4. Lista alla transaktioner.");
+            System.out.println("5. Visa transaktioner för en viss period.");
+            System.out.println("6. Visa saldo.");
+            System.out.println("7. Avsluta programmet.");
             System.out.print("> ");
 
             int choice;
@@ -28,14 +30,14 @@ public class Main {
                 continue;
             }
 
-
             switch (choice) {
                 case 1 -> service.addTransaction();
                 case 2 -> service.removeTransaction();
-                case 3 -> service.ListAllTransactions();
-                case 4 -> service.showTransactionsForPeriod();
-                case 5 -> service.showBalance();
-                case 6 -> running = false;
+                case 3 -> service.updateTransaction();
+                case 4 -> service.listAllTransactions();
+                case 5 -> service.showTransactionsForPeriod();
+                case 6 -> service.showBalance();
+                case 7 -> running = false;
                 default -> System.out.println("Ogiltligt val.");
             }
         }

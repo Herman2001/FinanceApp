@@ -26,5 +26,4 @@ public class Transaction {
     public String toCSV() {
         return date + "," + description + "," + amount;
     }
-
 }

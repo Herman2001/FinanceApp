@@ -15,36 +15,12 @@ public class TransactionService {
         this.manager = manager;
         this.scanner = scanner;
     }
+    // ====================== TRANSAKTIONER ======================
 
     public void addTransaction() {
-        System.out.println("Beskrivning: ");
-        System.out.print("> ");
-        String description = scanner.nextLine();
-
-        System.out.println("Belopp: ");
-        System.out.print("> ");
-        double amount;
-        try {
-            amount = Double.parseDouble(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Belopp måste vara ett tal.");
-            return;
-        }
-
-        System.out.println("Datum (YYYY-MM-DD) lämna tomt för att använda dagens datum: ");
-        System.out.print("> ");
-        String dateString = scanner.nextLine();
-        LocalDate date;
-        if (dateString.isEmpty()) {
-            date = LocalDate.now();
-        } else {
-            try {
-                date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            } catch (DateTimeParseException e) {
-                System.out.println("Felaktigt datum, använder dagens datum istället.");
-                date = LocalDate.now();
-            }
-        }
+        String description = promptForString("Beskrivning: ");
+        Double amount = promptForDouble("Belopp: ");
+        LocalDate date = promptForDateOrToday("Datum (YYYY-MM-DD) lämna tomt för att använda dagens datum: ");
 
         manager.addTransaction(new Transaction(description, amount, date));
         manager.saveAll();
@@ -58,33 +34,62 @@ public class TransactionService {
             return;
         }
 
-        for (int i = 0; i < all.size(); i++) {
-            System.out.println(i + ": " + all.get(i));
-        }
-        System.out.print("Skriv in numret på transaktionen du vill ta bort: ");
-        System.out.print("> ");
+        listAllTransactions();
 
-        try {
-            int index = Integer.parseInt(scanner.nextLine());
-            if (manager.removeTransaction(index)) {
-                System.out.println("Transaktion" + index + " bortagen!");
-            } else  {
-                System.out.println("Ogiltligt index.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Ogiltligt index, du måste skriva in en av ovanstående siffror.");
+        int index = promptForInt("Skriv in numret på transaktionen du vill ta bort: ", 0 , all.size() - 1);
+        if (manager.removeTransaction(index)) {
+            manager.saveAll();
+            System.out.println("Transaktion " + index + " bortagen!");
+        } else {
+            System.out.println("Ogiltligt index.");
         }
     }
 
-    public void ListAllTransactions() {
+    public void updateTransaction() {
+        List<Transaction> all = manager.getAllTransactions();
+        if (all.isEmpty()) {
+           System.out.println("Inga transaktioner hittades.");
+           return;
+        }
+
+        listAllTransactions();
+
+        int indexToUpdate = promptForInt("Skriv in numret på transaktionen du vill ändra: ", 0, all.size() - 1);
+
+        System.out.println("Vad vill du uppdatera? \n 1-> Beskrivning \n2-> Belopp \n3-> Datum");
+        int whatToUpdate = promptForInt("Val: ", 1, 3);
+
+        switch (whatToUpdate) {
+            case 1 -> {
+                String newDesc = promptForString("Ny beskrivning: ");
+                manager.updateTransaction(indexToUpdate, whatToUpdate, newDesc, 0.0, null);
+            }
+            case 2 -> {
+                double newAmount = promptForDouble("Nytt belopp: ");
+                manager.updateTransaction(indexToUpdate, whatToUpdate, null, newAmount, null);
+            }
+            case 3 -> {
+                LocalDate newDate = promptForDateOrToday("Nytt datum (YYYY-MM-DD) lämna tomt för dagens datum: ");
+                manager.updateTransaction(indexToUpdate, whatToUpdate, null, 0.0, newDate);
+            }
+        }
+
+        manager.saveAll();
+        System.out.println("Transaktion uppdaterad!");
+    }
+
+    public void listAllTransactions() {
         List<Transaction> all = manager.getAllTransactions();
         if (all.isEmpty()) {
             System.out.println("Inga transaktioner hittades.");
-            return;
         } else {
-            all.forEach(System.out::println);
+            for (int i = 0; i < all.size(); i++) {
+                System.out.println(i + ": " + all.get(i));
+            };
         }
     }
+
+    // ====================== SALDO ======================
 
     public void showBalance() {
         List<Transaction> all = manager.getAllTransactions();
@@ -94,16 +99,13 @@ public class TransactionService {
             double income = manager.getIncomeSum(all);
             double spent = manager.getSpentSum(all);
             double balance = income - spent;
-            System.out.println("Balance: " + balance + "kr");
+            System.out.println("Saldo: " + balance + "kr");
         }
     }
 
-    public void showTransactionsForPeriod() {
-        String yearInput = null;
-        YearMonth monthInput = null;
-        String weekInput = null;
-        LocalDate dayInput = null;
+    // ====================== FILTRERA ======================
 
+    public void showTransactionsForPeriod() {
         List<Transaction> all = manager.getAllTransactions();
         if (all.isEmpty()) {
             System.out.println("Inga transaktioner hittades.");
@@ -111,57 +113,85 @@ public class TransactionService {
         }
 
         System.out.println("Välj period: 1->År, 2->Månad, 3->Vecka, 4->Dag");
-        System.out.print("> ");
-        int period;
+        int period = promptForInt("Val: ", 1, 4);
 
-        try {
-            period = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Ogiltligt val, skriv endast in siffror.");
-            return;
-        }
+        String yearInput = null;
+        YearMonth monthInput = null;
+        String weekInput = null;
+        LocalDate dayInput = null;
 
-        try {
-            switch (period) {
-                case 1 -> {
-                    System.out.print("Skriv in år (YYYY): ");
-                    yearInput = scanner.nextLine();
-                }
-                case 2 -> {
-                    System.out.print("Skriv in månad (YYYY-MM): ");
-                    monthInput = YearMonth.parse(scanner.nextLine());
-                }
-                case 3 -> {
-                    System.out.print("Skriv in vecka (YYYY-WW): ");
-                    weekInput = scanner.nextLine();
-                }
-                case 4 -> {
-                    System.out.print("Skriv in dag (YYYY-MM-DD): ");
-                    dayInput = LocalDate.parse(scanner.nextLine());
-                }
-                default -> {
-                    System.out.println("Ogiltigt val.");
-                    return;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Felaktigt format, försök igen.\n");
-            return;
-        }
+
+       switch (period) {
+           case 1 -> yearInput = promptForString("Skriv in år (YYYY): ");
+           case 2 -> monthInput = YearMonth.parse(promptForString("Skriv inb månad (YYYY-MM): "));
+           case 3 -> weekInput = promptForString("Skriv in vecka (YYYY-WW): ");
+           case 4 -> dayInput = promptForDateOrToday("Skriv in dag (YYYY-MM-DD) lämna tomt för dagens datum: ");
+       }
 
         List<Transaction> filtered = manager.filterByPeriod(period, yearInput, monthInput, weekInput, dayInput);
-
         if (filtered.isEmpty()) {
             System.out.println("Inga transaktioner hittades.");
             return;
-        } else {
-            filtered.forEach(System.out::println);
-            double income = manager.getIncomeSum(filtered);
-            double spent = manager.getSpentSum(filtered);
-            double balance = income - spent;
-            System.out.println("Inkomst: "  + income + " kr");
-            System.out.println("Spenderat: " + spent + " kr");
-            System.out.println("Resultat: " + balance + " kr");
+        }
+
+        filtered.forEach(System.out::println);
+        double income = manager.getIncomeSum(filtered);
+        double spent = manager.getSpentSum(filtered);
+        double balance = income - spent;
+        System.out.println("Inkomst: "  + income + " kr");
+        System.out.println("Spenderat: " + spent + " kr");
+        System.out.println("Resultat: " + balance + " kr");
+    }
+
+    // ====================== HJÄLPMETODER INPUT ======================
+
+    private int promptForInt(String message, int min, int max) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine();
+            try {
+                int value = Integer.parseInt(input);
+                if (value < min || value > max) {
+                    System.out.println("Värdet måste vara mellan " + min + " och " + max + ".");
+                    continue;
+                }
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Fel: " + input + " är inte ett giltligt tal.");
+            }
+        }
+    }
+
+    private double promptForDouble(String message) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine();
+            try {
+                return Double.parseDouble(input);
+            }  catch (NumberFormatException e) {
+                System.out.println("Fel: " + input + " är inte ett giltligt tal.");
+            }
+        }
+    }
+
+    private String promptForString(String message) {
+        while (true) {
+            System.out.print(message);
+            String input = scanner.nextLine();
+            if (!input.isBlank()) return input;
+            System.out.println("Fel: fältet får inte vara tomt.");
+        }
+    }
+
+    private LocalDate promptForDateOrToday(String message) {
+        System.out.print(message);
+        String input = scanner.nextLine();
+        if (input.isBlank()) return LocalDate.now();
+        try {
+            return LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (DateTimeParseException e) {
+            System.out.println("Felaktigt datum, använder dagens datum istället.");
+            return LocalDate.now();
         }
     }
 }
