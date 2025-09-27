@@ -44,6 +44,21 @@ public class TransactionManager {
         }
     }
 
+    public void updateTransactionForUi(int index, String newDesc, double newAmount, LocalDate newDate ) {
+        Transaction t = transactions.get(index);
+        if (newDesc != null) {
+            t.description = newDesc;
+        }
+        if (newAmount >= 0.0) {
+            t.amount = newAmount;
+        }
+        if (newDate != null) {
+            t.date = newDate;
+            WeekFields weekFields = WeekFields.ISO;
+            t.week = newDate.get(weekFields.weekOfWeekBasedYear());
+        }
+    }
+
     public boolean removeTransaction(int index) {
         if (index >= 0 && index < transactions.size()) {
             balance -= transactions.get(index).amount;

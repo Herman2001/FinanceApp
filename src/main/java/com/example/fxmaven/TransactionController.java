@@ -23,7 +23,7 @@ public class TransactionController {
     private Label balanceLabel;
 
     @FXML
-    private Button addButton, removeButton, listButton, filterButton;
+    private Button addButton, removeButton, updateButton, listButton, filterButton;
 
     private final TransactionRepository repo = new CsvTransactionRepository("transactions.csv");
     private final TransactionManager manager = new TransactionManager(repo);
@@ -34,6 +34,7 @@ public class TransactionController {
 
         addButton.setOnAction(e -> handleAdd());
         removeButton.setOnAction(e -> handleRemove());
+        updateButton.setOnAction(e -> handleUpdate());
         listButton.setOnAction(e -> handleList());
         filterButton.setOnAction(e -> handleFilter());
     }
@@ -143,6 +144,73 @@ public class TransactionController {
         VBox root = new VBox(10, listView);
         root.setPadding(new Insets(10));
         Scene scene = new Scene(root, 400, 300);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void handleUpdate() {
+        Stage stage = new Stage();
+        stage.setTitle("Uppdatera transaktion");
+
+        ListView<Transaction> listView = new ListView<>();
+        listView.getItems().addAll(manager.getAllTransactions());
+
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(10));
+
+        Label instructions = new Label("Välj transaktion att uppdatera:");
+        root.getChildren().addAll(instructions, listView);
+        
+        listView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection == null) return;
+
+            root.getChildren().removeIf(node -> node instanceof VBox);
+
+            TextField descField = new TextField(newSelection.getDescription());
+            TextField amountField = new TextField(String.valueOf(newSelection.getAmount()));
+            TextField dateField = new TextField(newSelection.getDate().toString());
+
+            Button updateBtn = new Button("Uppdatera ✅");
+            updateBtn.setOnAction(event -> {
+                String desc = descField.getText();
+                double amount;
+                LocalDate date;
+
+                try {
+                    amount = Double.parseDouble(amountField.getText());
+                } catch (NumberFormatException e) {
+                    showAlert("Fel", "Belopp måste vara ett tal!");
+                    return;
+                }
+
+                try {
+                    if (dateField.getText().isEmpty()) {
+                        date = LocalDate.now();
+                    } else {
+                        date = LocalDate.parse(dateField.getText());
+                    }
+                } catch (DateTimeParseException e) {
+                    showAlert("Fel", "Felaktigt datumformat!");
+                    return;
+                }
+
+                int index = listView.getSelectionModel().getSelectedIndex();
+                manager.updateTransactionForUi(index, desc, amount, date);
+                listView.getItems().set(index, new Transaction(desc, amount, date));
+                manager.saveAll();
+                updateBalance();
+                showAlert("Info", "Transaktion uppdaterad!");
+            });
+
+            VBox form = new VBox(5, new Label("Beskrivning:"), descField,
+                    new Label("Belopp:"), amountField,
+                    new Label("Datum (YYYY-MM-DD):"), dateField,
+                    updateBtn);
+            form.setPadding(new Insets(10));
+            root.getChildren().add(form);
+        });
+
+        Scene scene = new Scene(root, 500, 400);
         stage.setScene(scene);
         stage.show();
     }

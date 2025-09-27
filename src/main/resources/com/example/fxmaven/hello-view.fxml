@@ -16,6 +16,7 @@
     <!-- Knappar -->
     <Button fx:id="addButton" text="Lägg till transaktion"/>
     <Button fx:id="removeButton" text="Radera transaktion"/>
+    <Button fx:id="updateButton" text="Uppdatera transaktion"/>
     <Button fx:id="listButton" text="Lista alla transaktioner"/>
     <Button fx:id="filterButton" text="Visa transaktioner för viss period"/>
 

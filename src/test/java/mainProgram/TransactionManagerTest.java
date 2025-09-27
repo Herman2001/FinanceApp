@@ -43,6 +43,15 @@ public class TransactionManagerTest {
         assertFalse(manager.removeTransaction(5));
     }
 
+    @Test
+    void testUpdateTransaction() {
+        Transaction t1 = new Transaction("Mat", -2000, LocalDate.of(2025, 1, 1));
+        manager.addTransaction(t1);
+
+        manager.updateTransaction(0, 1, "Kaffe", 0.0, null);
+        assertEquals(t1.getDescription(), "Kaffe");
+    }
+
 
     @Test
     void testFilterByYear() {

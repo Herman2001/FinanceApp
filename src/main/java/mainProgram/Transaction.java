@@ -18,6 +18,22 @@ public class Transaction {
 
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
     @Override
     public String toString() {
         return date + " | week: " + week + " | " + description + " | " + amount + "kr";
