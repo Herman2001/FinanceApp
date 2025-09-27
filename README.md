@@ -9,6 +9,7 @@ Tester skrivna med Junit 5 för att testa "TransactionManager".
 ## Funktioner
 - Lägg till transaktioner med belopp, datum och beskrivning
 - Radera transaktioner
+- Redigera befintlig transaktion
 - Filtrera transaktioner baserat på vecka
 - Se saldo och summeringar
 
