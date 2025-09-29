@@ -1,5 +1,6 @@
 package com.example.fxmaven;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,6 +21,8 @@ import java.util.List;
 public class TransactionController {
 
     @FXML
+    private CheckBox themeToggle;
+    @FXML
     private Label balanceLabel;
 
     @FXML
@@ -37,6 +40,22 @@ public class TransactionController {
         updateButton.setOnAction(e -> handleUpdate());
         listButton.setOnAction(e -> handleList());
         filterButton.setOnAction(e -> handleFilter());
+
+        themeToggle.setOnAction(e -> toggleTheme());
+        //För att "temat" ska laddas in från början och man inte ska behöva trycka 2 gånger första gången man ändrar
+        Platform.runLater(this::toggleTheme);
+    }
+
+    private void toggleTheme() {
+        Scene scene = themeToggle.getScene();
+        if (scene != null) {
+            scene.getStylesheets().clear();
+            if (themeToggle.isSelected()) {
+                scene.getStylesheets().add(getClass().getResource("/com/example/fxmaven/style.css").toExternalForm());
+            } else {
+                scene.getStylesheets().add(getClass().getResource("/com/example/fxmaven/light.css").toExternalForm());
+            }
+        }
     }
 
     private void updateBalance() {
@@ -160,7 +179,7 @@ public class TransactionController {
 
         Label instructions = new Label("Välj transaktion att uppdatera:");
         root.getChildren().addAll(instructions, listView);
-        
+
         listView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection == null) return;
 
@@ -250,6 +269,9 @@ public class TransactionController {
         });
 
         ListView<Transaction> resultList = new ListView<>();
+        TextArea incomeSpentLabel = new TextArea();
+        incomeSpentLabel.setEditable(false);
+        incomeSpentLabel.setPrefRowCount(3);
 
         Button filterButton = new Button("Filtrera");
         filterButton.setOnAction(event -> {
@@ -277,9 +299,21 @@ public class TransactionController {
             }
 
             resultList.getItems().setAll(filtered);
+            if (!filtered.isEmpty()) {
+                double income = manager.getIncomeSum(filtered);
+                double spent = manager.getSpentSum(filtered);
+                double result = income - spent;
+                incomeSpentLabel.setText(
+                        "Inkomst: " + income + "kr\n" +
+                        "Spenderat: " + spent + "kr\n" +
+                        "Resultat: " + result + "kr\n"
+                );
+            } else {
+                incomeSpentLabel.setText("Inga transaktioner hittades.");
+            }
         });
 
-        VBox root = new VBox(10, periodBox, inputField, filterButton, resultList);
+        VBox root = new VBox(10, periodBox, inputField, filterButton, resultList, incomeSpentLabel);
         Scene scene = new Scene(root, 400, 400);
         stage.setScene(scene);
         stage.show();

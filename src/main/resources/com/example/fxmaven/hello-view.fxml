@@ -4,10 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.CheckBox?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.fxmaven.TransactionController"
-      stylesheets="@style.css"
+
       spacing="15" alignment="CENTER" prefWidth="400" prefHeight="400">
 
     <!-- Saldo-rad -->
@@ -19,5 +20,8 @@
     <Button fx:id="updateButton" text="Uppdatera transaktion"/>
     <Button fx:id="listButton" text="Lista alla transaktioner"/>
     <Button fx:id="filterButton" text="Visa transaktioner för viss period"/>
+
+    <!--Theme toggle -->
+    <CheckBox fx:id="themeToggle" text="Theme toggle"/>
 
 </VBox>

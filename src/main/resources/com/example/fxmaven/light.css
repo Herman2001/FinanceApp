@@ -1,6 +1,6 @@
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: linear-gradient(to bottom right, #545454, #232323);
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #e5e5e5);
 }
 
 .button {
@@ -28,6 +28,6 @@
 .label#balanceLabel {
     -fx-font-size: 46px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #34495e;
     -fx-padding: 20;
 }

@@ -1,6 +1,4 @@
 package mainProgram;
-import mainProgram.Transaction;
-import mainProgram.TransactionRepository;
 
 import java.util.ArrayList;
 import java.util.List;

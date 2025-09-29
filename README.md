@@ -17,14 +17,16 @@ Tester skrivna med Junit 5 för att testa "TransactionManager".
 
 ## Teknik
 - Java 21
-- Java21 21
+- JavaFX
 - Maven
 - JUnit 5 (för tester)
 
 ---
 
-## Förbättrnigar
+## Förbättrnigar / TODO
 - Mer avancerat UI för förbättrad användarupplevelse
+- Kanske på något sätt dela upp koden bättre för UI så att inte allt ligger i Transaction Controller
+- Vet inte om jag har helt rätt uppdelning med mina filer/mappar så att allt ligger på rätt ställe, men allt funkar iallafall :D
 - Spara data i databas istället för CSV-fil. Kanske overkill för detta projekt kanske, men koden är 
   "förberedd" för det med ett interface till save och load funktioner. 
 - Går säkert att städa upp koden på fler ställen, med inbyggda funktioner osv...

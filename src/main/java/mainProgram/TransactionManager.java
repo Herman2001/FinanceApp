@@ -68,11 +68,6 @@ public class TransactionManager {
         return false;
     }
 
-    // För att ej råka ändra i "orginal" listan.
-    public List<Transaction> getAllTransactions() {
-        return new ArrayList<>(transactions);
-    }
-
     public List<Transaction> filterByPeriod(int period, String yearInput, YearMonth monthInput, String WeekInput, LocalDate DayInput) {
         List<Transaction> filteredTransactions = new ArrayList<>();
         for (Transaction t : transactions) {
@@ -104,6 +99,11 @@ public class TransactionManager {
             }
         }
         return filteredTransactions;
+    }
+
+    // För att ej råka ändra i "orginal" listan.
+    public List<Transaction> getAllTransactions() {
+        return new ArrayList<>(transactions);
     }
 
     public double getIncomeSum(List<Transaction> transactions) {
