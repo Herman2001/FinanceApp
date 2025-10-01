@@ -3,15 +3,15 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.CheckBox?>
+
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.fxmaven.TransactionController"
-
       spacing="15" alignment="CENTER" prefWidth="400" prefHeight="400">
 
-    <!-- Saldo-rad -->
+    <!-- Saldo -->
     <Label fx:id="balanceLabel" text="Saldo: 0 kr" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
     <!-- Knappar -->
@@ -24,4 +24,7 @@
     <!--Theme toggle -->
     <CheckBox fx:id="themeToggle" text="Theme toggle"/>
 
+    <!--För att ha allt i samma vy -->
+    <StackPane fx:id="contentArea" VBox.vgrow="ALWAYS"
+               style="-fx-border-color: lightgrey; -fx-border-image-width: 1; fx-padding: 10" />
 </VBox>

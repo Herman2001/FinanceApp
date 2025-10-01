@@ -19,7 +19,7 @@ public class TransactionService {
 
     public void addTransaction() {
         String description = promptForString("Beskrivning: ");
-        Double amount = promptForDouble("Belopp: ");
+        double amount = promptForDouble("Belopp: ");
         LocalDate date = promptForDateOrToday("Datum (YYYY-MM-DD) lämna tomt för att använda dagens datum: ");
 
         manager.addTransaction(new Transaction(description, amount, date));
@@ -85,7 +85,7 @@ public class TransactionService {
         } else {
             for (int i = 0; i < all.size(); i++) {
                 System.out.println(i + ": " + all.get(i));
-            };
+            }
         }
     }
 
