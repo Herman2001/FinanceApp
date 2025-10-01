@@ -32,6 +32,7 @@ public class TransactionManagerTest {
         assertEquals(t1, all.get(0));
         assertEquals(t2, all.get(1));
         assertEquals(-1500, all.get(1).amount);
+        assertEquals(10000, all.get(0).amount);
     }
 
     @Test

@@ -56,7 +56,7 @@ public class TransactionService {
 
         int indexToUpdate = promptForInt("Skriv in numret på transaktionen du vill ändra: ", 0, all.size() - 1);
 
-        System.out.println("Vad vill du uppdatera? \n 1-> Beskrivning \n2-> Belopp \n3-> Datum");
+        System.out.println("Vad vill du uppdatera? \n1-> Beskrivning \n2-> Belopp \n3-> Datum");
         int whatToUpdate = promptForInt("Val: ", 1, 3);
 
         switch (whatToUpdate) {
