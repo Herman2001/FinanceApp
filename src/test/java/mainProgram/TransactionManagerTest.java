@@ -31,8 +31,8 @@ public class TransactionManagerTest {
         assertEquals(2, all.size());
         assertEquals(t1, all.get(0));
         assertEquals(t2, all.get(1));
-        assertEquals(-1500, all.get(1).amount);
-        assertEquals(10000, all.get(0).amount);
+        assertEquals(-1500, all.get(1).getAmount());
+        assertEquals(10000, all.get(0).getAmount());
     }
 
     @Test
@@ -45,12 +45,30 @@ public class TransactionManagerTest {
     }
 
     @Test
-    void testUpdateTransaction() {
+    void testUpdateTransactionDesc() {
         Transaction t1 = new Transaction("Mat", -2000, LocalDate.of(2025, 1, 1));
         manager.addTransaction(t1);
 
         manager.updateTransaction(0, 1, "Kaffe", 0.0, null);
-        assertEquals(t1.getDescription(), "Kaffe");
+        assertEquals("Kaffe", t1.getDescription());
+    }
+
+    @Test
+    void testUpdateTransactionBalance() {
+        Transaction t1 = new Transaction("Mat", -2000, LocalDate.of(2025, 1, 1));
+        manager.addTransaction(t1);
+
+        manager.updateTransaction(0, 2, null, 2000, null);
+        assertEquals(2000, manager.getBalance());
+    }
+
+    @Test
+    void testUpdateTransactionBalanceUI (){
+        Transaction t1 = new Transaction("Mat", -2000, LocalDate.of(2025, 1, 1));
+        manager.addTransaction(t1);
+
+        manager.updateTransactionForUi(0,  null, 2000, null);
+        assertEquals(2000, manager.getBalance());
     }
 
 

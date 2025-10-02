@@ -10,12 +10,17 @@ import java.io.*;
 public class TransactionManager {
     private final List<Transaction> transactions = new ArrayList<>();
     private final TransactionRepository repository;
+
+    public double getBalance() {
+        return balance;
+    }
+
     double balance;
 
     public TransactionManager(TransactionRepository repository) {
         this.repository = repository;
         this.transactions.addAll(repository.load());
-        this.balance = transactions.stream().mapToDouble(t -> t.amount).sum();
+        this.balance = transactions.stream().mapToDouble(Transaction::getAmount).sum();
     }
 
     public void saveAll() {
@@ -24,43 +29,38 @@ public class TransactionManager {
 
     public void addTransaction(Transaction t) {
         transactions.add(t);
-        balance += t.amount;
+        balance += t.getAmount();
     }
 
     public void updateTransaction(int index, int whatToUpdate, String newDesc, double newAmount, LocalDate newDate ) {
+        if (index < 0 || index >= transactions.size()) return;
+        Transaction t = transactions.get(index);
         switch (whatToUpdate) {
-            case 1:
-                transactions.get(index).description = newDesc;
-                break;
-            case 2:
-                transactions.get(index).amount = newAmount;
-                break;
-            case 3:
-                transactions.get(index).date = newDate;
-                WeekFields weekFields = WeekFields.ISO;
-                transactions.get(index).week = newDate.get(weekFields.weekOfWeekBasedYear());
-                break;
+            case 1 -> t.setDescription(newDesc);
+            case 2 -> t.setAmount(newAmount);
+            case 3 -> t.setDate(newDate);
         }
+        recalcBalance();
     }
 
     public void updateTransactionForUi(int index, String newDesc, double newAmount, LocalDate newDate ) {
+        if (index < 0 || index >= transactions.size()) return;
         Transaction t = transactions.get(index);
         if (newDesc != null) {
-            t.description = newDesc;
+            t.setDescription(newDesc);
         }
         if (newAmount >= 0.0) {
-            t.amount = newAmount;
+            t.setAmount(newAmount);
         }
         if (newDate != null) {
-            t.date = newDate;
-            WeekFields weekFields = WeekFields.ISO;
-            t.week = newDate.get(weekFields.weekOfWeekBasedYear());
+            t.setDate(newDate);
         }
+        recalcBalance();
     }
 
     public boolean removeTransaction(int index) {
         if (index >= 0 && index < transactions.size()) {
-            balance -= transactions.get(index).amount;
+            balance -= transactions.get(index).getAmount();
             transactions.remove(index);
             return true;
         }
@@ -73,10 +73,10 @@ public class TransactionManager {
             boolean match = false;
             switch (period) {
                 case 1:
-                    match = t.date.getYear() == Integer.parseInt(yearInput);
+                    match = t.getDate().getYear() == Integer.parseInt(yearInput);
                     break;
                 case 2:
-                    match = YearMonth.from(t.date).equals(monthInput);
+                    match = YearMonth.from(t.getDate()).equals(monthInput);
                     break;
                 case 3:
                     String[]parts = WeekInput.split("-");
@@ -84,13 +84,13 @@ public class TransactionManager {
                     int inputWeek = Integer.parseInt(parts[1]);
 
                     WeekFields weekFields = WeekFields.ISO;
-                    int transactionWeek = t.date.get(weekFields.weekOfWeekBasedYear());
-                    int transactionYear = t.date.get(weekFields.weekBasedYear());
+                    int transactionWeek = t.getWeek();
+                    int transactionYear = t.getDate().get(weekFields.weekBasedYear());
 
                     match = (transactionYear == inputYear) && (transactionWeek == inputWeek);
                     break;
                 case 4:
-                    match = t.date.equals(DayInput);
+                    match = t.getDate().equals(DayInput);
                     break;
             }
             if (match) {
@@ -106,11 +106,16 @@ public class TransactionManager {
     }
 
     public double getIncomeSum(List<Transaction> transactions) {
-        return transactions.stream().filter(t -> t.amount > 0).mapToDouble(t -> t.amount).sum();
+        return transactions.stream().filter(t -> t.getAmount() > 0).mapToDouble(Transaction::getAmount).sum();
     }
 
     public double getSpentSum(List<Transaction> transactions) {
-        return transactions.stream().filter(t -> t.amount < 0).mapToDouble(t -> t.amount).sum();
+        return transactions.stream().filter(t -> t.getAmount() < 0).mapToDouble(Transaction::getAmount).sum();
     }
+
+    public void recalcBalance() {
+        balance = transactions.stream().mapToDouble(Transaction::getAmount).sum();
+    }
+
 }
 

@@ -3,10 +3,10 @@ import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 
 public class Transaction {
-    String description;
-    double amount;
-    LocalDate date;
-    int week;
+    private String description;
+    private double amount;
+    private LocalDate date;
+    private int  week;
 
     public Transaction(String description, double amount, LocalDate date) {
         this.description = description;
@@ -33,6 +33,22 @@ public class Transaction {
     public int getWeek() {
         return week;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+        WeekFields wf = WeekFields.ISO;
+        this.week = date.get(wf.weekOfWeekBasedYear());
+
+    }
+
 
     @Override
     public String toString() {
