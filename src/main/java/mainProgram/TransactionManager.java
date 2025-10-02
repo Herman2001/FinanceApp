@@ -100,8 +100,8 @@ public class TransactionManager {
         return filteredTransactions;
     }
 
-    // För att ej råka ändra i "orginal" listan.
     public List<Transaction> getAllTransactions() {
+        // För att ej råka ändra i "orginal" listan.
         return new ArrayList<>(transactions);
     }
 
@@ -112,7 +112,5 @@ public class TransactionManager {
     public double getSpentSum(List<Transaction> transactions) {
         return transactions.stream().filter(t -> t.amount < 0).mapToDouble(t -> t.amount).sum();
     }
-
-
 }
 

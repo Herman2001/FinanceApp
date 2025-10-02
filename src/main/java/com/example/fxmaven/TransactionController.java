@@ -1,5 +1,10 @@
 package com.example.fxmaven;
 
+import mainProgram.CsvTransactionRepository;
+import mainProgram.Transaction;
+import mainProgram.TransactionManager;
+import mainProgram.TransactionRepository;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -8,10 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
-import mainProgram.CsvTransactionRepository;
-import mainProgram.Transaction;
-import mainProgram.TransactionManager;
-import mainProgram.TransactionRepository;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
