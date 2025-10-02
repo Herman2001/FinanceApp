@@ -20,6 +20,7 @@ Tester skrivna med Juni5.
 💰 Se aktuellt saldo och sammanfattningar
 
 🎨 Ljust och mörkt tema i UI:t
+
 ---
 
 ## 🛠️ Teknik
