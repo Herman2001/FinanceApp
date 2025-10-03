@@ -32,3 +32,8 @@
     -fx-text-fill: #ecf0f1;
     -fx-padding: 20;
 }
+
+.label {
+    -fx-text-fill: #ecf0f1;
+}
+
