@@ -1,33 +1,33 @@
 .root {
     -fx-font-family: "Segoe UI", sans-serif;
-    -fx-background-color: linear-gradient(to bottom right, #ffffff, #e5e5e5);
+    -fx-background-color: linear-gradient(to bottom right, #eaf6fb, #cfe6f3);
 }
 
 .button {
-    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
+    -fx-background-color: linear-gradient(to bottom, #4fa3d1, #2b7da8);
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-padding: 20 40 20 40;
+    -fx-padding: 12 28 12 28;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.3, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.3, 0, 2);
     -fx-font-weight: bold;
+    -fx-background-radius: 8;
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(to bottom, #3ddc84, #2ecc71);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.4, 0, 3);
+    -fx-background-color: linear-gradient(to bottom, #5cbbe6, #3b95c2);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0.4, 0, 3);
     -fx-translate-y: -2;
 }
 
 .button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #27ae60, #1e8449);
+    -fx-background-color: linear-gradient(to bottom, #2c6285, #1e475f);
     -fx-translate-y: 1;
 }
-
 
 .label#balanceLabel {
     -fx-font-size: 46px;
     -fx-font-weight: bold;
-    -fx-text-fill: #34495e;
+    -fx-text-fill: #2c3e50;
     -fx-padding: 20;
 }
