@@ -6,6 +6,8 @@ Kan köras både i terminal och med grafiskt gränssnitt (JavaFX).
 
 Tester skrivna med Juni5.
 
+![App Screenshot](docs/appDemo.png)
+
 ---
 
 ## ✨ Funktioner
